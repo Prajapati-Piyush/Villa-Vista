@@ -73,7 +73,7 @@ const DashboardPage = () => {
                 </div>
                 <div className="bg-purple-500 text-white p-6 rounded-lg shadow-lg">
                     <h3 className="text-lg font-medium">Total Earnings</h3>
-                    <p className="text-2xl">${stats.totalEarnings}</p>
+                    <p className="text-2xl">₹{stats.totalEarnings}</p>
                 </div>
             </div>
 

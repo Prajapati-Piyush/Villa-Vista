@@ -2,11 +2,12 @@ import AccountNav from "../components/AccountNav.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PlaceImg from "../components/PlaceImg.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BookingDates from "../components/BookingDates.jsx";
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/bookings').then(response => {
@@ -14,15 +15,24 @@ export default function BookingsPage() {
     });
   }, []);
 
-  const cancelBooking = async (bookingId) => {
-    try {
-      await axios.delete(`/bookings/${bookingId}`);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get("refresh")) {
+      axios.get("/bookings").then((response) => {
+        setBookings(response.data); 
+      });
+    }
+  }, [location.search]);
 
-      const response = await axios.get('/bookings');
-      alert('Booking cancelled successfully.');
-      setBookings(response.data);
+  const requestCancelBooking = async (bookingId) => {
+    try {
+      const response = await axios.post("/request-cancel-booking", { bookingId });
+      if (response.status === 200) {
+        alert("OTP sent to your email");
+        navigate(`/verify-otp?bookingId=${bookingId}&type=cancel`);
+      }
     } catch (error) {
-      alert("Error while canceling the booking.");
+      alert("Error sending OTP. Try again.");
     }
   };
 
@@ -45,10 +55,10 @@ export default function BookingsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                   </svg>
                   <span className="text-lg md:text-xl font-medium text-gray-800">
-                    Total price: ${booking.price}
+                    Total price: ₹{booking.price}
                   </span>
                 </div>
-                <button onClick={() => cancelBooking(booking._id)} className="mt-4 bg-red-600 text-white py-2 px-4 rounded-md">
+                <button onClick={() => requestCancelBooking(booking._id)} className="mt-4 bg-red-600 text-white py-2 px-4 rounded-md">
                   Cancel Booking
                 </button>
               </div>

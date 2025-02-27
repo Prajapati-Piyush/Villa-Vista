@@ -8,7 +8,7 @@ import VillasPage from '../components/Admin/VillasPage';
 import BookingPage from '../components/Admin/BookingPage';
 import UsersPage from '../components/Admin/UsersPage';
 import PlacesFormPage from './PlacesFormPage';
-import LoginPage from './LoginPage';
+// import LoginPage from './LoginPage';
 import Feedbacks from '../components/Admin/Feedbacks';
 
 const AdminDashboard = () => {
@@ -19,7 +19,6 @@ const AdminDashboard = () => {
       <div className="flex-1 p-8">
         <Header />
 
-        {/* Routes for different admin pages */}
         <Routes>
           <Route path="/" element={<DashboardPage />} /> 
         
@@ -32,6 +31,7 @@ const AdminDashboard = () => {
         </Routes>
       </div>
     </div>
+
   );
 };
 

@@ -9,6 +9,12 @@ const bookingSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   price: Number,
+  otp: { type: Number, default: null },  // OTP field
+  otpExpiration: { type: Date, default: null },
+  otpVerified: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const BookingModel = mongoose.model('Booking', bookingSchema);

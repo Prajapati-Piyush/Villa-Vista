@@ -3,6 +3,7 @@ import { differenceInCalendarDays } from "date-fns";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import DatePicker from "react-datepicker";
 
 export default function BookingWidget({ place }) {
     const [checkIn, setCheckIn] = useState('');
@@ -13,21 +14,33 @@ export default function BookingWidget({ place }) {
     const [redirect, setRedirect] = useState('');
     const [error, setError] = useState('');
     const { user } = useContext(UserContext);
+    const [bookedDates, setBookedDates] = useState([]);
 
     useEffect(() => {
         if (user) {
             setName(user.name);
         }
-    }, [user]);
+        (async () => {
+            await fetchBookedDates();
+        })();
+    }, [user, place]);
+
+    async function fetchBookedDates() {
+        try {
+            const response = await axios.get(`/bookings/${place._id}`);
+            setBookedDates(response.data.map(date => new Date(date)));
+        } catch (error) {
+            console.error("Error fetching booked dates:", error);
+        }
+    }
 
     let numberOfNights = 0;
     if (checkIn && checkOut) {
         numberOfNights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
     }
 
-    // Validation function
     function validateForm() {
-        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
 
         if (!checkIn || !checkOut) {
             setError("Both check-in and check-out dates are required.");
@@ -72,7 +85,7 @@ export default function BookingWidget({ place }) {
 
     async function bookThisPlace() {
         if (!validateForm()) {
-            return; // Don't proceed with booking if validation fails
+            return;
         }
         const response = await axios.post('/bookings', {
             checkIn, checkOut, numberOfGuests, name, phone,
@@ -87,10 +100,17 @@ export default function BookingWidget({ place }) {
         return <Navigate to={redirect} />;
     }
 
+
+    function highlightBookedDates(date) {
+        return bookedDates.some(
+            bookedDate => bookedDate.toDateString() === date.toDateString()
+        ) ? "booked-date" : "";
+    }
+
     return (
         <div className="bg-white shadow p-4 rounded-2xl">
             <div className="text-2xl text-center">
-                Price: ${place.price} / per night
+                Price: ₹{place.price} / per night
             </div>
             {error && (
                 <div className="text-red-500 text-center my-2">
@@ -101,28 +121,37 @@ export default function BookingWidget({ place }) {
                 <div className="flex">
                     <div className="py-3 px-4">
                         <label>Check in:</label>
-                        <input type="date"
-                            value={checkIn}
-                            onChange={ev => setCheckIn(ev.target.value)} />
+                        <DatePicker
+                            selected={checkIn}
+                            onChange={date => setCheckIn(date)}
+                            minDate={new Date()}
+                            excludeDates={bookedDates}
+                            dateFormat="yyyy-MM-dd"
+                            className="w-full p-2 border rounded"
+                            dayClassName={highlightBookedDates} 
+                        />
                     </div>
                     <div className="py-3 px-4 border-l">
                         <label>Check out:</label>
-                        <input type="date" value={checkOut}
-                            onChange={ev => setCheckOut(ev.target.value)} />
+                        <DatePicker
+                            selected={checkOut}
+                            onChange={date => setCheckOut(date)}
+                            minDate={checkIn || new Date()}
+                            excludeDates={bookedDates}
+                            dateFormat="yyyy-MM-dd"
+                            className="w-full p-2 border rounded"
+                            dayClassName={highlightBookedDates}
+                        />
                     </div>
                 </div>
                 <div className="py-3 px-4 border-t">
                     <label>Number of guests:</label>
-                    <input 
+                    <input
                         type="number"
                         value={numberOfGuests}
-                        onChange={ev => {
-                            
-                            const guests = Math.min(ev.target.value, place.maxGuests);
-                            setNumberOfGuests(guests);
-                        }} 
-                        min="1" 
-                        max={place.maxGuests} 
+                        onChange={ev => setNumberOfGuests(Math.min(ev.target.value, place.maxGuests))}
+                        min="1"
+                        max={place.maxGuests}
                     />
                     <p className="text-sm text-gray-600 mt-1">
                         Max guests: {place.maxGuests}
@@ -144,7 +173,7 @@ export default function BookingWidget({ place }) {
             <button onClick={bookThisPlace} className="primary mt-4">
                 Book this place
                 {numberOfNights > 0 && (
-                    <span> ${numberOfNights * place.price}</span>
+                    <span> ₹{numberOfNights * place.price}</span>
                 )}
             </button>
         </div>

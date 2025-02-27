@@ -16,12 +16,12 @@ const Feedbacks = () => {
 
     const fetchFeedback = async () => {
       try {
-        if (user.role === 'admin') {
+        // if (user.role === 'admin') {
           const response = await axios.get('/feedbacks');
-        }
-        else{
-          const response = await axios.get('/owner/feedbacks');
-        }
+        // }
+        // else{
+        //   const response = await axios.get('/owner/feedbacks');
+        // }
         setFeedbacks(response.data);
         setFilteredFeedbacks(response.data);
         setLoading(false);

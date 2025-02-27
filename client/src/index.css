@@ -18,3 +18,20 @@ button.primary{
     background-color: #F5385D;
     @apply bg-primary p-2 w-full text-white rounded-2xl;
 }
+.booked-date {
+    background-color: #ff4d4d !important; /* Red background */
+    color: white !important;
+    border-radius: 50%;
+}
+
+.react-datepicker {
+    @apply absolute bg-white border border-gray-300 shadow-md rounded-lg p-2 z-50;
+}
+
+.react-datepicker-popper {
+    @apply z-50;
+}
+
+.react-datepicker__day--disabled {
+    @apply text-gray-400;
+}
