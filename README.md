@@ -106,3 +106,26 @@ cd client
 npm run dev
 ```
 
+---
+
+## Usage
+
+### 1. User
+- Sign up or log in to the application.
+- Browse and search for villas.
+- Select a villa and choose available dates for booking.
+- Manage bookings and view details.
+- Update profile information.
+
+### 2. Villa Owner
+- Log in to the system.
+- Add, edit, or remove villa listings.
+- Manage bookings received from users.
+- Respond to user feedback.
+
+### 3. Admin
+- Manage all villa listings.
+- View and handle bookings.
+- Oversee user feedback and interactions.
+- View statistics related to users and bookings.
+
