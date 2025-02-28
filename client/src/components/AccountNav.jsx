@@ -29,10 +29,10 @@ export default function AccountNav() {
                 <svg className="w-5 h-5 md:w-6 md:h-6"></svg>
                 My profile
             </Link>
-            <Link className={linkClasses('bookings')} to={'/account/bookings'}>
+            {user.role ==='user' && (<Link className={linkClasses('bookings')} to={'/account/bookings'}>
                 <svg className="w-5 h-5 md:w-6 md:h-6"></svg>
                 My bookings
-            </Link>
+            </Link>)}
             {user && user.role !== 'user' && (
                 <>
                     <Link className={linkClasses('places')} to={'/account/places'}>

@@ -572,6 +572,7 @@ app.post('/verify-cancel-booking', async (req, res) => {
 
     try {
         const userData = await getUserDataFromReq(req);
+        const email = userData.email;
         const booking = await Booking.findOne({ _id: bookingId, user: userData.id });
 
         if (!booking) return res.status(404).json({ message: 'Booking not found' });

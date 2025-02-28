@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 
 const Sidebar = () => {
-    const {user} =useContext(UserContext);
+    const { user } = useContext(UserContext);
     return (
         <div className="w-64 bg-gray-800 text-white p-6">
             <h2 className="text-2xl font-semibold text-center mb-8">{user.role.toUpperCase()}</h2>
@@ -20,7 +20,7 @@ const Sidebar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    {user.role !=='villa owner' && <NavLink
+                    {user.role !== 'villa owner' && <NavLink
                         to="/admin/villas"
                         className={({ isActive }) =>
                             `block py-2 px-4 hover:bg-gray-700 rounded ${isActive ? 'bg-gray-600' : ''}`
@@ -50,14 +50,14 @@ const Sidebar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink
+                    {user.role !== 'villa owner' && <NavLink
                         to="/admin/feedbacks"
                         className={({ isActive }) =>
                             `block py-2 px-4 hover:bg-gray-700 rounded ${isActive ? 'bg-gray-600' : ''}`
                         }
                     >
                         Feedbacks
-                    </NavLink>
+                    </NavLink>}
                 </li>
             </ul>
         </div>

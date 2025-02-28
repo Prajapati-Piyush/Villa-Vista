@@ -35,9 +35,9 @@ export default function IndexPage() {
             <Link 
               to={'/place/' + place._id} 
               key={place._id}
-              className="block transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+              className="block transform transition duration-300 "
             >
-              <div className="bg-gray-500 mb-2 rounded-2xl flex overflow-hidden">
+              <div className="bg-gray-500 mb-2 rounded-2xl flex overflow-hidden hover:scale-105 hover:shadow-2xl">
                 {place.photos?.[0] && (
                   <Image className="rounded-2xl object-cover aspect-square w-full" src={place.photos?.[0]} alt="" />
                 )}

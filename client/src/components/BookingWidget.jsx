@@ -87,6 +87,12 @@ export default function BookingWidget({ place }) {
         if (!validateForm()) {
             return;
         }
+
+        if (user.role !== 'user') {
+            setError("Only users can book places.");
+            return false;
+        }
+
         const response = await axios.post('/bookings', {
             checkIn, checkOut, numberOfGuests, name, phone,
             place: place._id,
@@ -128,7 +134,7 @@ export default function BookingWidget({ place }) {
                             excludeDates={bookedDates}
                             dateFormat="yyyy-MM-dd"
                             className="w-full p-2 border rounded"
-                            dayClassName={highlightBookedDates} 
+                            dayClassName={highlightBookedDates}
                         />
                     </div>
                     <div className="py-3 px-4 border-l">
