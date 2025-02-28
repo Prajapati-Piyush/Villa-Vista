@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import { Outlet } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const Layout = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -10,9 +11,12 @@ const Layout = () => {
   };
 
   return (
-    <div className='px-4 pt-3 flex flex-col min-h-screen'>
+    <div className=' pt-3 flex flex-col min-h-screen'>
+      <div className="px-4">
       <Header searchInput={searchInput} handleQueryChange={handleQueryChange} />
-      <Outlet context={{ searchInput }} /> {/* Passing searchInput to child components */}
+      <Outlet className='px-4' context={{ searchInput }} /> {/* Passing searchInput to child components */}
+      </div>
+      <Footer />
     </div>
   );
 };
