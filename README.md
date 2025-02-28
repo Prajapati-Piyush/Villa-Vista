@@ -27,13 +27,13 @@ Welcome to the Villa Booking Application! This project allows users to book vill
 - View and manage all bookings.
 - Handle user feedback.
 - View booking statistics.
-- 
+
 ### Admin Features:
 - Manage villas (edit/remove).
 - View and manage all bookings.
 - Handle user feedback.
 - View booking statistics.
-- View Users statistics.
+- View user statistics.
 
 ### Authentication:
 - User login and registration.
@@ -47,7 +47,7 @@ Welcome to the Villa Booking Application! This project allows users to book vill
   - React.js (for building the UI)
   - React Router (for page navigation)
   - Axios (for HTTP requests)
-  - TailwindCSS (for styling)
+  - Tailwind CSS (for styling)
 
 - **Backend**:
   - Node.js (server-side JavaScript)
@@ -57,6 +57,7 @@ Welcome to the Villa Booking Application! This project allows users to book vill
 - **Others**:
   - Date-fns (for date manipulation)
   - JWT (for user authentication)
+  - Cloudinary (for image uploads)
 
 ---
 
@@ -69,9 +70,39 @@ Follow these steps to set up the project locally:
 ```bash
 git clone https://github.com/your-username/villa-booking.git
 cd villa-booking
+```
 
-### 2. Clone the repository:
+### 2. Install dependencies:
+
+#### For Frontend:
 
 ```bash
-git clone https://github.com/your-username/villa-booking.git
-cd villa-booking
+cd client
+npm install
+```
+
+#### For Backend:
+
+```bash
+cd backend
+npm install
+```
+
+---
+
+## How to Run
+
+### 1. Running the Backend:
+
+```bash
+cd backend
+npm start
+```
+
+### 2. Running the Frontend:
+
+```bash
+cd client
+npm run dev
+```
+
