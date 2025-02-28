@@ -57,7 +57,7 @@ Welcome to the Villa Booking Application! This project allows users to book vill
 - **Others**:
   - Date-fns (for date manipulation)
   - JWT (for user authentication)
-  - Cloudinary (for image uploads)
+  - Multer (for image uploads)
 
 ---
 
