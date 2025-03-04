@@ -16,7 +16,8 @@ import multer from 'multer';
 import fs from 'fs';
 import Feedback from './models/feedback.model.js';
 import sendMail from './utils/sendEmail.js';
-
+import Razorpay from 'razorpay';
+import bodyParser from 'body-parser';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -30,6 +31,7 @@ const jwtSecret = process.env.JWT_SECRET;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 const photosMiddleware = multer({ dest: 'uploads/' });
 
@@ -73,8 +75,8 @@ function adminOnly(req, res, next) {
     } else {
         return res.status(401).json({ message: 'Unauthorized' });
     }
-}
-;
+};
+
 
 app.get('/test', (req, res) => {
     res.json("Test ok!");
@@ -345,15 +347,49 @@ app.get('/bookings/:id', async (req, res) => {
     }
 })
 
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+
+app.post("/create-order", async (req, res) => {
+    try {
+        const { amount } = req.body;
+
+        const options = {
+            amount: amount * 100, // Amount in paisa (₹1 = 100 paisa)
+            currency: "INR",
+            receipt: `receipt_${Math.random()}`,
+            payment_capture: 1
+        };
+
+        const order = await razorpay.orders.create(options);
+        console.log("Order Created:", order); // ✅ Debugging ke liye
+
+        res.status(201).json(order); // ✅ Ensure response is sent
+    } catch (error) {
+        console.error("Error creating order:", error);
+        res.status(500).json({ error: "Failed to create order" }); // ✅ Return error response
+    }
+});
+
+
 app.post('/bookings', async (req, res) => {
     try {
         const userData = await getUserDataFromReq(req);
-        const { place, checkIn, checkOut, numberOfGuests, name, phone, price } = req.body;
+        const { place, checkIn, checkOut, numberOfGuests, name, phone, price, paymentId } = req.body;
 
+        if (!paymentId) {
+            return res.status(400).json({ error: "Payment ID is required." });
+        }
+        
         // Create the booking
         const doc = await Booking.create({
             place, checkIn, checkOut, numberOfGuests, name, phone, price,
             user: userData.id,
+            paymentId
         });
 
         const emailSubject = 'Booking Confirmation';

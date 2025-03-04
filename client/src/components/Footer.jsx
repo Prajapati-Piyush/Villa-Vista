@@ -8,7 +8,7 @@ const Footer = () => {
           
           {/* Logo and About Section */}
           <div>
-            <h2 className="text-2xl font-bold">Villa Vista</h2>
+            <h2 className="text-2xl font-bold text-blue-800">Villa Vista</h2>
             <p className="mt-2 text-gray-400">
               Discover the perfect getaway with our handpicked villas. Book with ease and enjoy luxurious stays.
             </p>
@@ -16,7 +16,7 @@ const Footer = () => {
   
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-3 text-blue-800">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="hover:text-gray-300 transition">Home</Link></li>
               <li><Link to="/" className="hover:text-gray-300 transition">Browse Villas</Link></li>
@@ -27,7 +27,7 @@ const Footer = () => {
   
           {/* Contact and Socials */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Contact</h3>
+            <h3 className="text-lg font-semibold mb-3  text-blue-800 ">Contact</h3>
             <p className="text-gray-400">Email: piyushpra50@gmail.com</p>
             <p className="text-gray-400">Phone: +91 703 979 3720</p>
   

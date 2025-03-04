@@ -4,6 +4,9 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import DatePicker from "react-datepicker";
+import logo from "../assets/logo.svg";
+
+
 
 export default function BookingWidget({ place }) {
     const [checkIn, setCheckIn] = useState('');
@@ -83,7 +86,7 @@ export default function BookingWidget({ place }) {
         return true;
     }
 
-    async function bookThisPlace() {
+    async function handlePayment() {
         if (!validateForm()) {
             return;
         }
@@ -93,14 +96,65 @@ export default function BookingWidget({ place }) {
             return false;
         }
 
-        const response = await axios.post('/bookings', {
-            checkIn, checkOut, numberOfGuests, name, phone,
-            place: place._id,
-            price: numberOfNights * place.price,
-        });
-        const bookingId = response.data._id;
-        setRedirect(`/account/bookings/${bookingId}`);
+        try {
+            const { data } = await axios.post('/create-order', {
+                amount: numberOfNights * place.price
+            });
+
+            if (!data || !data.id) {
+                alert("Error creating order. Please try again.");
+                return;
+            }
+
+            console.log("Opening Razorpay Payment Modal, Order ID:", data.id);
+
+            if (!window.Razorpay) {
+                alert("Razorpay SDK not loaded. Please check your script import.");
+                return;
+            }
+
+            const options = {
+                key: "rzp_test_satWDFf0xrQ5Ys",
+                amount: data.amount,
+                currency: "INR",
+                name: "Villa Vista",
+                description: "Payment for Villa",
+                order_id: data.id,
+                image:logo,
+                handler: async function (response) {
+                    console.log("Payment Successful!", response);
+
+                    const res = await axios.post("/bookings", {
+                        checkIn, checkOut, numberOfGuests, name, phone,
+                        place: place._id,
+                        price: numberOfNights * place.price,
+                        paymentId: response.razorpay_payment_id
+                    });
+
+                    console.log("Booking response:", res.data);
+                    const bookingId = res.data._id;
+                    setRedirect(`/account/bookings/${bookingId}`);
+                },
+                prefill: {
+                    name: user.name,
+                    email: user.email,
+                    contact: phone
+                },
+                theme: {
+                    color: "#252d7e",  // 🔥 Custom Theme Color
+                    backdrop_color: "#f5f5f8"
+                }
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+
+        } catch (error) {
+            console.error("Payment Error:", error);
+            alert("Payment Failed! Try Again.");
+        }
     }
+
 
     if (redirect) {
         return <Navigate to={redirect} />;
@@ -176,11 +230,9 @@ export default function BookingWidget({ place }) {
                     </div>
                 )}
             </div>
-            <button onClick={bookThisPlace} className="primary mt-4">
-                Book this place
-                {numberOfNights > 0 && (
-                    <span> ₹{numberOfNights * place.price}</span>
-                )}
+
+            <button onClick={handlePayment} className="primary mt-4">
+                Pay & Book ₹{numberOfNights * place.price}
             </button>
         </div>
     );

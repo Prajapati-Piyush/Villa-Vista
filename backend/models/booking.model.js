@@ -14,7 +14,8 @@ const bookingSchema = new mongoose.Schema({
   otpVerified: {
     type: Boolean,
     default: false
-  }
+  },
+  paymentId: { type: String, required: true },
 });
 
 const BookingModel = mongoose.model('Booking', bookingSchema);
