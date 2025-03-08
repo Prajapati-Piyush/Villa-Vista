@@ -43,7 +43,7 @@ const UsersPage = () => {
           <tr>
             <th className="px-4 py-2 text-left">User ID</th>
             <th className="px-4 py-2 text-left">Name</th>
-            <th className="px-4 py-2 text-left">Phone</th>
+            {/* <th className="px-4 py-2 text-left">Phone</th> */}
             {user.role === 'admin' && <th className="px-4 py-2 text-left">Role</th>}
           </tr>
         </thead>
@@ -52,7 +52,7 @@ const UsersPage = () => {
             <tr key={u._id}>
               <td className="px-4 py-2">{u._id}</td>
               <td className="px-4 py-2">{u.name}</td>
-              <td className="px-4 py-2">{u.phone || 'N/A'}</td>
+              {/* <td className="px-4 py-2">{u.phone || 'N/A'}</td> */}
               {user.role === 'admin' && <td className="px-4 py-2">{u.role || 'N/A'}</td>}
             </tr>
           ))}

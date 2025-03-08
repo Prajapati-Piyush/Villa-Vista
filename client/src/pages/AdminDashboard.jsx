@@ -1,4 +1,3 @@
-// components/AdminDashboard.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from '../components/Admin/Sidebar';
@@ -8,7 +7,6 @@ import VillasPage from '../components/Admin/VillasPage';
 import BookingPage from '../components/Admin/BookingPage';
 import UsersPage from '../components/Admin/UsersPage';
 import PlacesFormPage from './PlacesFormPage';
-// import LoginPage from './LoginPage';
 import Feedbacks from '../components/Admin/Feedbacks';
 
 const AdminDashboard = () => {

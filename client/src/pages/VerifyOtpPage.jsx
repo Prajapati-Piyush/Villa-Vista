@@ -7,7 +7,7 @@ const VerifyOtpPage = () => {
     const [otp, setOtp] = useState(Array(6).fill(""));
     const [error, setError] = useState("");
     const [isVerifying, setIsVerifying] = useState(false);
-    const [otpResendTimer, setOtpResendTimer] = useState(60);
+    const [otpResendTimer, setOtpResendTimer] = useState(30);
     const inputRefs = useRef([]);
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(useLocation().search);
@@ -69,9 +69,9 @@ const VerifyOtpPage = () => {
         try {
             setError("");
             setOtp(Array(6).fill(""));
-            setOtpResendTimer(60);
+            setOtpResendTimer(30);
 
-            await axios.post(type === "cancel" ? "/resend-cancel-otp" : "/resend-otp", { email });
+            await axios.post(type === "cancel" ? "/resend-cancel-otp" : "/resend-otp", { email, bookingId });
         } catch (error) {
             setError("Failed to resend OTP. Try again.");
         }

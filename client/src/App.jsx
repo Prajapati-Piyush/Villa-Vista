@@ -19,7 +19,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import VerifyOtpPage from './pages/VerifyOtpPage'
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = import.meta.env.MODE === "development" ? 'http://localhost:3000' : "/";
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
           <Route path="/place/:id" element={<PlacePage />} />
           <Route path='/account/bookings' element={<BookingsPage />} />
           <Route path='/account/bookings/:id' element={<BookingPage />} />
-          
+
           <Route path='/account/feedback' element={<FeedbackPage />} />
         </Route>
         <Route path='/admin/*' element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

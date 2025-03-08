@@ -1,0 +1,13 @@
+{
+  "name": "sem_vi-project",
+  "version": "1.0.0",
+  "description": "Welcome to the Villa Booking Application! This project allows users to book villas for their vacations. The application provides a platform where users can search, book, and manage their bookings. The platform also includes admin functionality to manage bookings, villa details, and user feedback.",
+  "main": "index.js",
+  "scripts": {
+    "build":"npm install --prefix backend && npm install --prefix client && npm run build --prefix client",
+    "start":"npm run start --prefix backend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

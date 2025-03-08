@@ -19,12 +19,14 @@ import sendMail from './utils/sendEmail.js';
 import Razorpay from 'razorpay';
 import bodyParser from 'body-parser';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const _dirname = path.resolve();
 
 const bcryptSalt = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10;
 const jwtSecret = process.env.JWT_SECRET;
@@ -384,7 +386,7 @@ app.post('/bookings', async (req, res) => {
         if (!paymentId) {
             return res.status(400).json({ error: "Payment ID is required." });
         }
-        
+
         // Create the booking
         const doc = await Booking.create({
             place, checkIn, checkOut, numberOfGuests, name, phone, price,
@@ -623,7 +625,7 @@ app.post('/verify-cancel-booking', async (req, res) => {
 
         const response = await Booking.deleteOne({ _id: bookingId });
         if (response.deletedCount > 0) {
-            await sendMail(email, 'Your Booking Cancellation', 'Your Booking has been cancelled');
+            await sendMail(email, 'Your Booking Cancellation', 'Your Booking has been cancelled successfully.', 'Your money will be refunded in 3-5 working days.');
         }
         res.status(200).json({ message: 'Booking cancelled successfully' });
 
@@ -635,6 +637,7 @@ app.post('/verify-cancel-booking', async (req, res) => {
 ;
 
 app.post('/resend-cancel-otp', async (req, res) => {
+    console.log("Request received:", req.body);
     const { bookingId } = req.body;
     try {
         const userData = await getUserDataFromReq(req);
@@ -645,12 +648,13 @@ app.post('/resend-cancel-otp', async (req, res) => {
         }
 
         const booking = await Booking.findOne({ _id: bookingId, user: userData.id });
+        console.log(bookingId, email)
 
         if (!booking) return res.status(404).json({ message: 'Booking not found' });
 
         const otp = Math.floor(100000 + Math.random() * 900000);
         booking.otp = otp;
-        booking.otpExpiration = Date.now() + 60000; // 1 min expiry
+        booking.otpExpiration = Date.now() + 30000; // 1 min expiry
         await booking.save();
 
         await sendMail(email, 'Your New OTP for Booking Cancellation', `Your new OTP is: ${otp}`);
@@ -789,7 +793,13 @@ app.get('/owner/feedbacks', async (req, res) => {
 
 
 
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(_dirname, "../client/dist")));
 
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(_dirname, "../client", "dist", "index.html"));
+    })
+}
 
 app.listen(PORT, () => {
     console.log(`✅ Server running on Port ${PORT}`);
