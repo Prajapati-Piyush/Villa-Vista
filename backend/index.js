@@ -41,7 +41,7 @@ const photosMiddleware = multer({ dest: 'uploads/' });
 
 app.use(cors({
     // origin: "http://localhost:5173", for local 
-    origin: "https://frontend-6jzn.onrender.com",
+    origin: "https://villavista-oa7a.onrender.com",
     credentials: true,
 }));
 app.use(cookieParser());
