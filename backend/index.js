@@ -40,7 +40,7 @@ const photosMiddleware = multer({ dest: 'uploads/' });
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
     // origin: "http://localhost:5173", for local 
-    origin: "https://villavista-oa7a.onrender.com/",
+    origin: "https://villavista-oa7a.onrender.com",
     credentials: true,
 }));
 
