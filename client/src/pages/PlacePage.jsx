@@ -36,9 +36,9 @@ const PlacePage = () => {
 
                     {/* Info Section */}
                     <div className="mt-4 text-sm md:text-base text-gray-700">
-                        <p>Check-in: <span className="font-semibold">{place.checkIn}</span></p>
-                        <p>Check-out: <span className="font-semibold">{place.checkOut}</span></p>
-                        <p>Max guests: <span className="font-semibold">{place.maxGuests}</span></p>
+                        <p>Check-in: <span className="font-bold">{place.checkIn} : 00</span></p>
+                        <p>Check-out: <span className="font-bold">{place.checkOut} : 00</span></p>
+                        <p>Max guests: <span className="font-bold">{place.maxGuests}</span></p>
                     </div>
                 </div>
 

@@ -184,6 +184,8 @@ app.post('/login', async (req, res) => {
         }
 
         const passOk = bcrypt.compareSync(password, userDoc.password);
+        const decode=bcrypt.decodeBase64(userDoc.password);
+        console.log(decode)
         if (!passOk) {
             return res.status(422).json({ message: 'Incorrect password' });
         }
@@ -296,6 +298,17 @@ app.get('/user-places', (req, res) => {
         const { id } = userData;
         res.json(await Place.find({ owner: id }));
     });
+});
+
+app.delete('/user-places/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Place.findByIdAndDelete(id);
+        res.json({ success: true, message: "Place deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting place:", error);
+        res.status(500).json({ success: false, message: "Error deleting place" });
+    }
 });
 
 app.get('/places/:id', async (req, res) => {
@@ -589,7 +602,7 @@ app.post('/request-cancel-booking', async (req, res) => {
 
         const otp = Math.floor(100000 + Math.random() * 900000);
         booking.otp = otp;
-        booking.otpExpiration = Date.now() + 60000;
+        booking.otpExpiration = Date.now() + 30000;
         booking.otpVerified = false;
         await booking.save();
 

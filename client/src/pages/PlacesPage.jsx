@@ -11,6 +11,18 @@ export default function PlacesPage() {
             setPlaces(data);
         });
     }, []);
+
+    const handleDelete = (placeId) => {
+        axios.delete(`/user-places/${placeId}`)
+            .then(() => {
+                setPlaces(places.filter(place => place._id !== placeId));
+    
+            })
+            .catch((error) => {
+                console.error("Error deleting place:", error);
+            });
+    };
+
     return (
         <div>
             <AccountNav />
@@ -29,18 +41,35 @@ export default function PlacesPage() {
                         to={'/account/places/' + place._id}
                         className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl"
                     >
-                        <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
-                            <PlaceImg place={place} />
+                        <div className="w-32 h-32">
+                            <div className="flex w-32 h-32 bg-gray-300 grow shrink-0 object-cover">
+                                <PlaceImg place={place} />
+                            </div>
                         </div>
+
+
                         <div className="grow-0 shrink">
                             <h2 className="text-xl">{place.title}</h2>
                             <p className="text-sm mt-2">{place.description.length > 100
                                 ? place.description.slice(0, 600) + '...'
                                 : place.description
                             }</p>
+
                         </div>
+                        <button
+                                className="bg-red-500 max-w-md mt-10 max-h-sm p-2 rounded-md"
+                                
+                                onClick={(e) => {
+                                    e.preventDefault(); 
+                                    handleDelete(place._id);
+                                }}
+                            >
+                                Delete
+                            </button>
                     </Link>
+                    
                 ))}
+                
             </div>
 
         </div>

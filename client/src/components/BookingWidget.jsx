@@ -18,6 +18,10 @@ export default function BookingWidget({ place }) {
     const [error, setError] = useState('');
     const { user } = useContext(UserContext);
     const [bookedDates, setBookedDates] = useState([]);
+    if (!place) {
+        return <div>Loading...</div>;
+    }
+    
 
     useEffect(() => {
         if (user) {

@@ -33,7 +33,7 @@ const VerifyOtpPage = () => {
         }
     }, [otpResendTimer]);
 
-    // ✅ Function to verify OTP
+    //  Function to verify OTP
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         setIsVerifying(true);
@@ -56,15 +56,32 @@ const VerifyOtpPage = () => {
 
     // Handle OTP input change
     const handleChange = (e, index) => {
-        if (!isNaN(e.target.value) && e.target.value.length <= 1) {
+        const value = e.target.value;
+        if (!isNaN(value) && value.length <= 1) {
             const newOtp = [...otp];
-            newOtp[index] = e.target.value;
+            newOtp[index] = value;
             setOtp(newOtp);
-            if (e.target.value && index < 5) inputRefs.current[index + 1]?.focus();
+
+            
+            if (value && index < otp.length - 1) {
+                inputRefs.current[index + 1]?.focus();
+            }
         }
     };
 
-    // ✅ Function to resend OTP
+
+    // Handle Backspace
+    const handleKeyDown = (e, index) => {
+        if (e.key === "Backspace" && !otp[index] && index > 0) {
+            const newOtp = [...otp];
+            newOtp[index - 1] = "";  
+            setOtp(newOtp);
+            inputRefs.current[index - 1]?.focus();  
+        }
+    };
+
+
+    //  Function to resend OTP
     const resendOtp = async () => {
         try {
             setError("");
@@ -99,6 +116,7 @@ const VerifyOtpPage = () => {
                                 className="border border-gray-300 rounded text-center w-10 h-10"
                                 value={digit}
                                 onChange={(e) => handleChange(e, index)}
+                                onKeyDown={(e) => handleKeyDown(e, index)}  
                             />
                         ))}
                     </div>

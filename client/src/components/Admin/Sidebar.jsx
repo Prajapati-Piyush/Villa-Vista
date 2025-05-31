@@ -46,7 +46,7 @@ const Sidebar = () => {
                             `block py-2 px-4 hover:bg-gray-700 rounded ${isActive ? 'bg-gray-600' : ''}`
                         }
                     >
-                        Users
+                        Customers
                     </NavLink>
                 </li>
                 <li>
