@@ -31,17 +31,20 @@ const _dirname = path.resolve();
 const bcryptSalt = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10;
 const jwtSecret = process.env.JWT_SECRET;
 
+
+
+app.use(express.json());
+
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+const photosMiddleware = multer({ dest: 'uploads/' });
+
 app.use(cors({
     // origin: "http://localhost:5173", for local 
     origin: "https://villavista-oa7a.onrender.com",
     credentials: true,
 }));
-
-app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
-const photosMiddleware = multer({ dest: 'uploads/' });
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
