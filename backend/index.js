@@ -534,7 +534,8 @@ app.get('/bookings/recent', async (req, res) => {
 
         const formattedBookings = recentBookings.map(booking => ({
             id: booking._id,
-            villa: booking.place.title,
+            villa: booking.place?.title || 'Unknown',
+
             user: booking.name,
             phone: booking.phone,
             checkIn: booking.checkIn.toISOString().split('T')[0],
