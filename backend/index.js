@@ -63,6 +63,7 @@ function getUserDataFromReq(req) {
 
 function adminOnly(req, res, next) {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
     if (token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
             if (err) {
@@ -232,6 +233,7 @@ app.post('/logout', (req, res) => {
 
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
     if (token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
@@ -284,6 +286,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
 
 app.post('/places', (req, res) => {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
     const {
         title, address, addedPhotos, description,
         perks, extraInfo, checkIn, checkOut, maxGuests, price
@@ -301,6 +304,7 @@ app.post('/places', (req, res) => {
 
 app.get('/user-places', (req, res) => {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const { id } = userData;
         res.json(await Place.find({ owner: id }));
@@ -325,6 +329,7 @@ app.get('/places/:id', async (req, res) => {
 
 app.put('/places', async (req, res) => {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
     const {
         id, title, address, addedPhotos, description, price,
         perks, extraInfo, checkIn, checkOut, maxGuests,
@@ -690,6 +695,7 @@ app.post('/resend-cancel-otp', async (req, res) => {
 
 app.get('/owner-bookings', async (req, res) => {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
     const { type } = req.query; // 'recent' or 'all'
 
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -730,6 +736,7 @@ app.get('/owner-bookings', async (req, res) => {
 
 app.get('/owner-customers', async (req, res) => {
     const { token } = req.cookies;
+    console.log("Token Recieved : ", token);
 
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) return res.status(403).json({ message: 'Unauthorized' });
