@@ -128,8 +128,8 @@ const PlacePage = () => {
             <div className="bg-white border-t mt-8 px-8 py-8">
                 <h2 className="font-semibold text-2xl text-gray-800">Extra info</h2>
                 <div className="mb-4 mt-2 text-sm md:text-base text-gray-700 leading-6 whitespace-pre-line">
-  {place.extraInfo}
-</div>
+                   {place.extraInfo}
+                </div>
 
             </div>
         </div>
