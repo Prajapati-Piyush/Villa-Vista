@@ -15,7 +15,7 @@ const Header = ({ searchInput, handleQueryChange }) => {
         {/* Logo */}
         <Link to={'/'} className='flex items-center gap-1'>
           <img src={logo} alt="" className='h-12 w-12' />
-          <span className='font-bold text-3xl text-'>VillVista</span>
+          <span className='font-bold text-3xl text-'>VillaVista</span>
         </Link>
 
         {/* Search Bar */}
