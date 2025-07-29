@@ -41,7 +41,7 @@ const photosMiddleware = multer({ dest: 'uploads/' });
 
 app.use(cors({
     // origin: "http://localhost:5173", for local 
-    origin: "https://villa-vista-frontend.onrender.com",
+    origin: ["https://villa-vista-frontend.onrender.com","https://villa-vista-five.vercel.app"],
     credentials: true,
 }));
 app.use(cookieParser());
