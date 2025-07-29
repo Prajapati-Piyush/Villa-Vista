@@ -389,6 +389,11 @@ const razorpay = new Razorpay({
 app.post("/create-order", async (req, res) => {
     try {
         const { amount } = req.body;
+        console.log("Incoming amount (rupees):", amount);
+        console.log("Final amount (paisa):", amount * 100);
+        if (amount * 100 > 10000000) {
+            return res.status(400).json({ error: "Amount exceeds Razorpay's maximum allowed per transaction (₹100,000)" });
+        }
 
         const options = {
             amount: amount * 100, // Amount in paisa (₹1 = 100 paisa)
